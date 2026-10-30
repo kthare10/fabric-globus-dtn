@@ -42,6 +42,26 @@ Both have been run end to end on FABRIC: `ext` at WASH (IPv4), and `fp` at PSC
 4. **For `fp`** - get a VLAN, a routed prefix and a gateway from the partner; or set
    `vlan="auto"`, build the slice, and run the probe step to see what the port offers first.
 
+## Permissions you need
+
+**FABRIC** - granted as project permissions (tags) by the project owner or FABRIC staff:
+
+| permission | needed for |
+|---|---|
+| `Net.FABNetv4Ext` | the `ext` profile (FABRIC's public IPv4) |
+| `Net.FacilityPort.<port-name>`, e.g. `Net.FacilityPort.PSC-L3-PSC` - or `Net.AllFacilityPorts` | the `fp` profile, for the specific facility port |
+| `VM.NoLimitCPU`, `VM.NoLimitRAM`, `VM.NoLimitDisk` | the default VM size (16 cores, 32 GB RAM, 500 GB disk) if it exceeds your project's per-VM limits - or lower `cores`/`ram`/`disk` in `dtn_config.py` |
+| `Slice.NoLimitLifetime` | only to keep the slice longer than FABRIC's default maximum lease |
+| `Net.NoLimitBW` | only if the facility-port bandwidth (`bw`) exceeds your project's limit |
+
+**Globus** - any Globus account can create a Globus Auth project and a *service credential
+for Globus Connect Server* (app.globus.org > Settings > Developers); no subscription is needed
+for endpoint-to-endpoint transfers. A subscription is needed for browser upload/download, guest
+collections and administrator roles for people.
+
+**The facility-port partner** - a VLAN on their port, a routed prefix and gateway (IPv4 and/or
+IPv6), and inbound TCP 443 and 50000-51000 open to the address you are given.
+
 ## Things worth knowing
 
 - **Management is never touched.** The public address gets its own routing table and source
@@ -71,3 +91,7 @@ Both have been run end to end on FABRIC: `ext` at WASH (IPv4), and `fp` at PSC
   uplink scripts remove that profile and stop it being recreated for the public NIC.
 - **Display names are identities.** The storage script finds the gateway and collection by
   name; renaming a live one creates a second set.
+
+## License
+
+Apache License 2.0 - see [LICENSE](LICENSE) and [NOTICE](NOTICE).
