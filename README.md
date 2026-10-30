@@ -8,6 +8,8 @@ directory on it as a Globus mapped collection. Two ways to give the VM a public 
 | `ext` | **FABnetv4Ext** | FABRIC - its own routable IPv4 pool | nothing outside FABRIC |
 | `fp` | a partner's **L3 facility port** | the partner's routed prefix, on one VLAN | an address assignment from the partner |
 
+Also published as a FABRIC artifact: [Globus Endpoint on FABRIC: FABnetv4Ext or Facility Port](https://artifacts.fabric-testbed.net/artifacts/9ff48bb5-6beb-4e84-8201-16142a539117).
+
 Both have been run end to end on FABRIC: `ext` at WASH (IPv4), and `fp` at PSC
 (`PSC-L3-PSC`, IPv6-only). The network steps were also proven dual-stack at NCSA.
 
