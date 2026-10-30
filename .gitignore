@@ -1,0 +1,7 @@
+# The Globus service credential.
+globus_creds.env
+# Each endpoint's identity. Keep it safe and private: with it, a rebuilt VM
+# rejoins the same endpoint; without it, a lost VM means a new endpoint.
+deployment-key-*.json
+__pycache__/
+.ipynb_checkpoints/
