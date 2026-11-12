@@ -126,9 +126,16 @@ release_nm_auto_profile() {
     [ "$d" = "$dev" ] || \
       [ "$(nmcli -g connection.interface-name connection show "$name" 2>/dev/null)" = "$dev" ] || continue
     echo "   NetworkManager's automatic profile '$name' had configured $dev:"
-    { ip -o addr show dev "$dev" | grep -v " fe80:"; ip route show dev "$dev"; ip -6 route show dev "$dev"; } \
-      2>/dev/null | sed 's/^/     /'
-    nmcli connection delete "$name" >/dev/null 2>&1 && echo "   removed it (no-auto-default set for $dev)"
+    # Diagnostic only. Under `set -euo pipefail` a grep that matches nothing (a
+    # port with no RA leaves only fe80) would otherwise abort the whole script.
+    { ip -o addr show dev "$dev" | grep -v " fe80:" || true
+      ip route show dev "$dev" || true; ip -6 route show dev "$dev" || true; } \
+      2>/dev/null | sed 's/^/     /' || true
+    if nmcli connection delete "$name" >/dev/null 2>&1; then
+      echo "   removed it (no-auto-default set for $dev)"
+    else
+      echo "   WARNING: could not delete '$name'; delete it by hand before rebooting" >&2
+    fi
   done
 }
 release_nm_auto_profile "${PARENT:-$IFACE}"
